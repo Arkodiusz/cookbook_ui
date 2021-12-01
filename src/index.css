@@ -165,40 +165,40 @@ body {
     background: rgba(0, 0, 0, 0.9);
     color: white;
     position: absolute;
-    top: 90%;
+    top: 88%;
     width: 100%;
     text-align: center;
 }
 
-.recipeTableContainer {
+.ingredientsTableContainer {
     overflow-x: auto;
     text-align: center;
 }
 
-.recipeTableContainer h4{
-    margin: auto;
-    padding: 5px;
-    width: 80%;
-    background: whitesmoke;
-}
-
-.recipe table {
+.ingredientsTableContainer table {
     margin: auto auto 10px;
-    border: 1px solid whitesmoke;
+    border: 2px solid whitesmoke;
     width: 80%;
     border-collapse: collapse;
     table-layout: auto;
+
 }
 
-.recipe table td {
+.ingredientsTableContainer table th {
+    padding: 5px;
+    background: whitesmoke;
+}
+
+
+.ingredientsTableContainer table td {
     padding: 5px;
 }
 
-.recipe table input {
+.ingredientsTableContainer table input {
     padding-left: 5px;
 }
 
-.setupColumn {
+.ingredientsSetupColumn {
     justify-content: space-evenly;
     display: flex;
 }
@@ -210,8 +210,12 @@ body {
     padding-bottom: 10px;
 }
 
+.recipeTextBox h3 {
+    text-align: center;
+}
+
 .recipe table tr:nth-child(even){
-    background-color: whitesmoke;
+    background: whitesmoke;
 }
 
 footer {
