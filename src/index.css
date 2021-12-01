@@ -11,7 +11,7 @@ body {
 }
 
 .app {
-    max-width: 600px;
+    /*max-width: 600px;*/
     margin: 10px;
     overflow: auto;
     min-height: 300px;
@@ -28,7 +28,9 @@ body {
 }
 
 .icon {
+    width: fit-content;
     color: black;
+    cursor: pointer;
 }
 
 .icon:hover {
@@ -64,16 +66,19 @@ body {
     width: 100%;
 }
 
+
 .recipesContainer {
     background: white;
     padding: 5px;
-    display: list-item;
-    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 400px));
+    gap: 10px;
+    justify-content: center;
 }
 
 .recipesThumbnail{
-    margin-bottom: 10px;
-    max-height: 250px;
+    max-width: 400px;
+    max-height: 200px;
     background: white;
     overflow-y: hidden;
     display: flex;
@@ -82,6 +87,7 @@ body {
     position: relative;
     cursor: pointer;
     border-radius: 10px;
+    grid-column-end: span 2;
 }
 
 .recipesThumbnail img {
@@ -122,19 +128,17 @@ body {
 
 /*********************************************************************************/
 
-
 .recipe{
-background: red;
 }
 
 .recipePictureContainer{
-    margin-bottom: 10px;
-    max-height: 250px;
+    margin: auto auto 10px;
+    max-height: 300px;
+    max-width: 600px;
     background: white;
     overflow-y: hidden;
     display: flex;
     align-items: center;
-    justify-content: center;
     position: relative;
     border-radius: 10px;
 }
@@ -154,7 +158,6 @@ background: red;
 }
 
 .recipePictureContainer span {
-    background: darkslategrey;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -167,19 +170,43 @@ background: red;
     text-align: center;
 }
 
+.recipeTableContainer {
+    overflow-x: auto;
+    text-align: center;
+}
+
+.recipeTableContainer h4{
+    margin: auto;
+    padding: 5px;
+    width: 80%;
+    background: whitesmoke;
+}
+
 .recipe table {
+    margin: auto auto 10px;
     border: 1px solid whitesmoke;
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
+    table-layout: auto;
 }
 
 .recipe table td {
     padding: 5px;
 }
 
-.recipeTextBox {
-    padding-top: 10px;
+.recipe table input {
+    padding-left: 5px;
+}
 
+.setupColumn {
+    justify-content: space-evenly;
+    display: flex;
+}
+
+.recipeTextBox {
+    margin: auto auto 10px;
+    width: 80%;
+    padding-top: 10px;
     padding-bottom: 10px;
 }
 

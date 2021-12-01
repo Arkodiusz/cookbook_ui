@@ -1,4 +1,4 @@
-import { FiHome } from "react-icons/fi";
+import { MdHome } from "react-icons/md";
 import {Link} from "react-router-dom";
 
 const Header = () => {
@@ -7,25 +7,13 @@ const Header = () => {
         <header className='header'>
             <Link to='/'>
                 <div className='icon'>
-                    <FiHome
-                        size={40}
-                        style={{ hei: '20px', cursor: 'pointer', }}
-                        onClick={() => console.log('asassa')}
-                    />
+                    <MdHome size={35}/>
                 </div>
             </Link>
 
             <h1>COOKBOOK</h1>
 
-            <Link to='/'>
-                <div className='icon'>
-                    <FiHome
-                        size={40}
-                        style={{ hei: '20px', cursor: 'pointer' }}
-                        onClick={() => console.log('asassa')}
-                    />
-                </div>
-            </Link>
+            <div></div>
 
         </header>
     )
