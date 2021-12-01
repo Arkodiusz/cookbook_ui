@@ -1,29 +1,28 @@
 import {IoMdAddCircle, MdCancel, MdCheckCircle, MdDeleteForever, MdEdit} from "react-icons/all";
 import {useEffect, useState} from "react";
 
-const Ingredients = (extractedRecipeId) => {
-
-    const recipeId = extractedRecipeId.extractedRecipeId
-
+const Ingredients = ({extractedRecipeId}) => {
     const [ingredients, setIngredients] = useState([])
     const [addMode, setAddMode] = useState(false)
     const [editMode, setEditMode] = useState(0)
     const [newName, setNewName] = useState('')
     const [newQuantity, setNewQuantity] = useState('')
     const [newUnit, setNewUnit] = useState('')
+    const recipeId = extractedRecipeId
 
     useEffect(() => {
         const getIngredients = async () => {
             const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${recipeId}/ingredients`)
-            const ingredientsFromDb = await res.json()
-            console.log(ingredientsFromDb)
-            setIngredients(ingredientsFromDb)
+            const fetchedIngredients = await res.json()
+            console.log('fetched ingredients', fetchedIngredients)
+            setIngredients(fetchedIngredients)
         }
         getIngredients().then()
-    }, []);
+    }, [recipeId]);
 
     const saveNewIngredient = async () => {
         if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
+            //TODO: replace alert with popup
             alert('Please fill all inputs')
             return
         }
@@ -39,7 +38,7 @@ const Ingredients = (extractedRecipeId) => {
             },
             body: JSON.stringify(newIngredient),
         })
-        console.log('save new ingredient', newIngredient)
+        console.log('saved ingredient', newIngredient)
         clearInputs()
         setAddMode(false)
         const data = await res.json()
@@ -48,6 +47,7 @@ const Ingredients = (extractedRecipeId) => {
 
     const saveEditedIngredient = async (id) => {
         if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
+            //TODO: replace alert with popup
             alert('Please fill all inputs')
             return
         }
@@ -68,19 +68,21 @@ const Ingredients = (extractedRecipeId) => {
         const newIngredients = ingredients
         newIngredients[indexOfOldIngredient] = data
         setIngredients(newIngredients)
-        console.log('successfully edited =>', data)
+        console.log('edited ingredient =>', data)
         clearInputs()
         setEditMode(0)
     }
 
     const deleteIngredient = async (id) => {
+        //TODO: make a popup for confirmation
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${recipeId}/ingredients/${id}`, {
             method: 'DELETE',
         })
         res.status === 200
             ? setIngredients(ingredients.filter((ingredient) => ingredient.id !== id))
+            //TODO: replace alert with popup
             : alert('Error Deleting This Ingredient')
-        console.log('delete ingredient => ' + id)
+        console.log('deleted ingredient id =>', id)
     }
 
     function clearInputs() {
@@ -261,7 +263,6 @@ const Ingredients = (extractedRecipeId) => {
                                     size={25}
                                     onClick={() => {
                                         clearInputs()
-                                        console.log('cancel adding ingredient')
                                         setAddMode(false)
                                     }}
                                 />

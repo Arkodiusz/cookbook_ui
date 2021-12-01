@@ -3,14 +3,24 @@ import {Link} from "react-router-dom";
 
 const Recipes = ({recipes}) => {
 
+    function validateImageUrl(imageUrl) {
+        if (imageUrl === undefined) {
+            return image.toString()
+        }
+        if (imageUrl === '' || !(imageUrl.includes('http'))) {
+            return image.toString()
+        }
+        return imageUrl
+    }
+
     return (
         <div className='recipesContainer'>
 
             {recipes.map((recipe) => (
-                <Link to={'/recipes/' + recipe.id} key={recipe.id}>
+                <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
                     <div className='recipesThumbnail' >
                         <img
-                            src={recipe.imageUrl === '' ? image : recipe.imageUrl}
+                            src={validateImageUrl(recipe.imageUrl)}
                             alt=''
                         />
                         <div className='recipesThumbnailBar'>
