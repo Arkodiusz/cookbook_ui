@@ -45,7 +45,7 @@ const Ingredients = ({extractedRecipeId}) => {
         setIngredients([...ingredients, data])
     }
 
-    const saveEditedIngredient = async (id) => {
+    const updateIngredient = async (id) => {
         if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
             //TODO: replace alert with popup
             alert('Please fill all inputs')
@@ -159,7 +159,7 @@ const Ingredients = ({extractedRecipeId}) => {
                                 />
                             </td>
                             <td>
-                                <select name="newUnit" className="form-control"
+                                <select name="newUnit"
                                         value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
                                     <option value="">unit</option>
                                     <option value="G">g</option>
@@ -178,7 +178,7 @@ const Ingredients = ({extractedRecipeId}) => {
                                 <div className='icon'>
                                     <MdCheckCircle
                                         size={25}
-                                        onClick={() => saveEditedIngredient(ingredient.id)}
+                                        onClick={() => updateIngredient(ingredient.id)}
                                     />
                                 </div>
                                 <div className='icon'>
@@ -187,8 +187,6 @@ const Ingredients = ({extractedRecipeId}) => {
                                         onClick={() => {
                                             setEditMode(0)
                                             clearInputs()
-
-
                                         }}
                                     />
                                 </div>
@@ -236,8 +234,7 @@ const Ingredients = ({extractedRecipeId}) => {
                             />
                         </td>
                         <td>
-                            <select name="newUnit" className="form-control"
-                                    value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
+                            <select value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
                                 <option value="">unit</option>
                                 <option value="G">g</option>
                                 <option value="DAG">dag</option>
