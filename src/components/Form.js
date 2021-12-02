@@ -12,14 +12,13 @@ const Form = ({onSubmit}) => {
 
     const submitForm = async () => {
         if (newName === '') {
-            //TODO: replace alert with popup
             alert('Please fill at least name input')
             return
         }
         const newRecipe = {
             name: newName,
             imageUrl: newImageUrl,
-            portions: newPortions,
+            portions: newPortions === '' ? '0' : newPortions,
             time: newTime,
             preparation: newPreparation
         }

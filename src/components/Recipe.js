@@ -26,7 +26,10 @@ const Recipe = ({onDelete, onUpdate}) => {
     }, [recipeId]);
 
     const deleteRecipe = async (id) => {
-        //TODO: make a popup for confirmation
+        //TODO: replace confirm with popup
+        if (!window.confirm("Are you sure you wish to delete this item?")) {
+            return
+        }
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${id}`, {
             method: 'DELETE',
         })
@@ -42,7 +45,6 @@ const Recipe = ({onDelete, onUpdate}) => {
 
     const updateRecipe = async () => {
         //TODO: url validation
-        //TODO: maybe time validation?
         if (newName === '' || newImageUrl === '' || newPortions === '' || newTime === '' || newPreparation === '') {
             //TODO: replace alert with popup
             alert('Please fill all inputs')
@@ -95,13 +97,23 @@ const Recipe = ({onDelete, onUpdate}) => {
     }
 
     function preparePortionsValue(value) {
-        if (value === 0 || value === undefined) {
+        if (value === 0) {
             return '?'
         }
         if (value > 10 ) {
             return '> 10'
         }
-        return value.toString()
+        return value
+    }
+
+    function prepareTimeValue(value) {
+        if (value === '') {
+            return '?'
+        }
+        if (value > 10 ) {
+            return '> 4 h'
+        }
+        return value
     }
 
     return (
@@ -184,7 +196,7 @@ const Recipe = ({onDelete, onUpdate}) => {
                 {!editMode ? (
                     <span>
                         <h5>PORTIONS :&ensp;{preparePortionsValue(recipe.portions)}</h5>
-                        <h5>PREP.&ensp;TIME :&ensp;{recipe.time}</h5>
+                        <h5>PREP.&ensp;TIME :&ensp;{prepareTimeValue(recipe.time)}</h5>
                     </span>
                 ) : (
                     <span>

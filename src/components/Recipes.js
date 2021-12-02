@@ -26,8 +26,8 @@ const Recipes = ({recipes}) => {
                         <div className='recipesThumbnailBar'>
                             <h3>{recipe.name}</h3>
                             <div className='recipesThumbnailBarBottom'>
-                                <h6>PORTIONS :&nbsp;&nbsp;{recipe.portions === null ? '?' : recipe.portions}</h6>
-                                <h6>PREP.&nbsp;&nbsp;TIME :&nbsp;&nbsp;{recipe.time === null ? '?' : recipe.time}</h6>
+                                <h6>PORTIONS :&nbsp;&nbsp;{recipe.portions === 0 ? '?' : recipe.portions}</h6>
+                                <h6>PREP.&nbsp;&nbsp;TIME :&nbsp;&nbsp;{recipe.time === '' ? '?' : recipe.time}</h6>
                             </div>
                         </div>
                     </div>

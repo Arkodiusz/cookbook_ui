@@ -74,7 +74,9 @@ const Ingredients = ({extractedRecipeId}) => {
     }
 
     const deleteIngredient = async (id) => {
-        //TODO: make a popup for confirmation
+        if (!window.confirm("Are you sure you wish to delete this item?")) {
+            return
+        }
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${recipeId}/ingredients/${id}`, {
             method: 'DELETE',
         })
