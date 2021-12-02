@@ -119,10 +119,19 @@ const Recipe = ({onDelete, onUpdate}) => {
     return (
         <div className='recipe'>
             <div className='recipePictureContainer'>
-                <img
-                    src={validateImageUrl(recipe.imageUrl)}
-                    alt=''
-                />
+
+                {!editMode ? (
+                    <img
+                        src={validateImageUrl(recipe.imageUrl)}
+                        alt=''
+                    />
+                ): (
+                    <img
+                        src={validateImageUrl(newImageUrl)}
+                        alt=''
+                    />
+                )}
+
                 <div className='recipePictureContainerTopBar'>
 
                     {!editMode ? (

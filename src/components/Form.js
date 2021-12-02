@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {MdCheckCircle, MdCancel} from "react-icons/md";
+import image from "../assets/default-img.png";
 
 const Form = ({onSubmit}) => {
     const [newName, setNewName] = useState('')
@@ -24,6 +25,16 @@ const Form = ({onSubmit}) => {
         }
         await onSubmit(newRecipe)
         navigate('/', {replace: true});
+    }
+
+    function validateImageUrl(imageUrl) {
+        if (imageUrl === undefined) {
+            return image.toString()
+        }
+        if (imageUrl === '' || !(imageUrl.includes('http'))) {
+            return image.toString()
+        }
+        return imageUrl
     }
 
     return (
@@ -50,6 +61,11 @@ const Form = ({onSubmit}) => {
                     onChange={(e) => setNewImageUrl(e.target.value)}
                 />
             </div>
+
+            <img id='imagePreview'
+                src={validateImageUrl(newImageUrl)}
+                alt=''
+            />
 
             <div className='formInput'>
                 <label>Portions:</label>

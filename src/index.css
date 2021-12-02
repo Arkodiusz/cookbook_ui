@@ -284,6 +284,7 @@ footer {
     margin: auto auto 10px;
     width: 50%;
     min-width: 350px;
+    text-align: center;
 }
 
 .formContainer h3{
@@ -305,10 +306,20 @@ footer {
 
 #formDescription {
     padding: 2px;
+    text-align: left;
 }
 
 #formOptions {
     display: flex;
     justify-content: space-between;
     padding: 5px;
+}
+
+#imagePreview {
+    border: 1px solid whitesmoke;
+    background: whitesmoke;
+    height: 150px;
+    min-height: 150px;
+    min-width: 150px;
+    margin: 5px;
 }
