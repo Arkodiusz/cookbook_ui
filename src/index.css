@@ -185,8 +185,6 @@ footer {
     top: 50%;
     width: 100%;
     padding: 5px;
-    display: flex;
-    justify-content: space-between;
 }
 
 .recipePictureContainerEditBox {
@@ -278,8 +276,36 @@ footer {
     display: flex;
 }
 
-/*********** INGREDIENTS ***********/
+/*********** FORM ***********/
 
-.addForm {
-    background: orange;
+.formContainer {
+    padding: 5px;
+    margin: auto auto 10px;
+    width: 50%;
+}
+
+.formContainer h3{
+    text-align: center;
+}
+
+.formInput {
+    padding: 2px;
+
+    display: flex;
+    justify-content: space-between;
+    height: 25px;
+}
+
+.formInput select {
+    width: 40%;
+}
+
+#formDescription {
+    padding: 2px;
+}
+
+#formOptions {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
 }

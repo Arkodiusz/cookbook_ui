@@ -94,6 +94,16 @@ const Recipe = ({onDelete, onUpdate}) => {
         setNewPreparation('')
     }
 
+    function preparePortionsValue(value) {
+        if (value === 0 || value === undefined) {
+            return '?'
+        }
+        if (value > 10 ) {
+            return '> 10'
+        }
+        return value.toString()
+    }
+
     return (
         <div className='recipe'>
             <div className='recipePictureContainer'>
@@ -173,7 +183,7 @@ const Recipe = ({onDelete, onUpdate}) => {
 
                 {!editMode ? (
                     <span>
-                        <h5>PORTIONS :&ensp;{recipe.portions === 0 ? '?' : recipe.portions}</h5>
+                        <h5>PORTIONS :&ensp;{preparePortionsValue(recipe.portions)}</h5>
                         <h5>PREP.&ensp;TIME :&ensp;{recipe.time}</h5>
                     </span>
                 ) : (
