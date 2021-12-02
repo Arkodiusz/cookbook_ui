@@ -40,7 +40,7 @@ body {
 footer {
     margin-top: 30px;
     text-align: center;
-    opacity: 50%
+    opacity: .5;
 }
 
 /*********** RECIPES GRID ***********/
@@ -98,7 +98,7 @@ footer {
 }
 
 .recipesThumbnail:hover img {
-    opacity: 80%;
+    opacity: .8;
 }
 .recipesThumbnail:hover .recipesThumbnailBar {
     background: rgba(0, 0, 0, 0.9);
@@ -282,10 +282,12 @@ footer {
     padding: 5px;
     margin: auto auto 10px;
     width: 50%;
+    min-width: 350px;
 }
 
 .formContainer h3{
     text-align: center;
+    padding-bottom: 10px;
 }
 
 .formInput {

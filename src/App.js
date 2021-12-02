@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import {useEffect, useState} from "react";
 import Recipes from "./components/Recipes";
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 import About from "./components/About";
 import Recipe from "./components/Recipe";
 import Form from "./components/Form";
@@ -46,7 +46,7 @@ function App() {
     }
 
     return (
-        <Router>
+        <Router hashType='slash'>
             <div className="app">
                 <Header />
                 <Routes>

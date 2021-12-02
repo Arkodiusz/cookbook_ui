@@ -30,7 +30,7 @@ const Form = ({onSubmit}) => {
     return (
         <div className='formContainer'>
 
-            <h3>ADD FORM</h3>
+            <h3>RECIPE ADD FORM</h3>
 
             <div className='formInput'>
                 <label>Name:</label>
