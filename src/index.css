@@ -11,8 +11,8 @@ body {
 }
 
 .app {
-    /*max-width: 600px;*/
-    margin: 10px;
+    max-width: 1300px;
+    margin: auto auto;
     overflow: auto;
     min-height: 300px;
     border: 1px solid black;
@@ -25,6 +25,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding: 10px;
 }
 
 .icon {
@@ -322,4 +323,10 @@ footer {
     min-height: 150px;
     min-width: 150px;
     margin: 5px;
+}
+
+/*********** ABOUT ***********/
+
+#about {
+    background: whitesmoke;
 }
