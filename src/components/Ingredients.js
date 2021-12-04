@@ -1,7 +1,7 @@
 import {IoMdAddCircle, MdCancel, MdCheckCircle, MdDeleteForever, MdEdit} from "react-icons/all";
 import {useEffect, useState} from "react";
 
-const Ingredients = ({extractedRecipeId}) => {
+const Ingredients = ({extractedRecipeId, recipeIsDefault}) => {
     const [ingredients, setIngredients] = useState([])
     const [addMode, setAddMode] = useState(false)
     const [editMode, setEditMode] = useState(0)
@@ -22,7 +22,6 @@ const Ingredients = ({extractedRecipeId}) => {
 
     const saveNewIngredient = async () => {
         if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
-            //TODO: replace alert with popup
             alert('Please fill all inputs')
             return
         }
@@ -47,7 +46,6 @@ const Ingredients = ({extractedRecipeId}) => {
 
     const updateIngredient = async (id) => {
         if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
-            //TODO: replace alert with popup
             alert('Please fill all inputs')
             return
         }
@@ -74,6 +72,10 @@ const Ingredients = ({extractedRecipeId}) => {
     }
 
     const deleteIngredient = async (id) => {
+        if (recipeIsDefault) {
+            alert('You can\'t delete ingredients of default recipe')
+            return;
+        }
         if (!window.confirm("Are you sure you wish to delete this item?")) {
             return
         }
@@ -82,7 +84,6 @@ const Ingredients = ({extractedRecipeId}) => {
         })
         res.status === 200
             ? setIngredients(ingredients.filter((ingredient) => ingredient.id !== id))
-            //TODO: replace alert with popup
             : alert('Error Deleting This Ingredient')
         console.log('deleted ingredient id =>', id)
     }
@@ -91,6 +92,28 @@ const Ingredients = ({extractedRecipeId}) => {
         setNewName('')
         setNewQuantity('')
         setNewUnit('')
+    }
+
+    function enableEditMode(ingredient) {
+        if (recipeIsDefault) {
+            alert('You can\'t edit ingredients of default recipe')
+            return;
+        }
+        setAddMode(false)
+        setNewName(ingredient.name)
+        setNewQuantity(ingredient.quantity)
+        setNewUnit(ingredient.unit)
+        setEditMode(ingredient.id)
+    }
+
+    function enableAddMode() {
+        if (recipeIsDefault) {
+            alert('You can\'t add ingredients to default recipe')
+            return;
+        }
+        setEditMode(0)
+        clearInputs()
+        setAddMode(true)
     }
 
     return (
@@ -123,13 +146,7 @@ const Ingredients = ({extractedRecipeId}) => {
                                 <div className='icon'>
                                     <MdEdit
                                         size={25}
-                                        onClick={() => {
-                                            setAddMode(false)
-                                            setNewName(ingredient.name)
-                                            setNewQuantity(ingredient.quantity)
-                                            setNewUnit(ingredient.unit)
-                                            setEditMode(ingredient.id)
-                                        }}
+                                        onClick={() => enableEditMode(ingredient)}
                                     />
                                 </div>
                                 <div className='icon'>
@@ -170,10 +187,11 @@ const Ingredients = ({extractedRecipeId}) => {
                                     <option value="ML">ml</option>
                                     <option value="L">l</option>
                                     <option value="TEASPOON">teaspoon</option>
-                                    <option value="SPOON">spoon</option>
+                                    <option value="TABLESPOON">tablespoon</option>
                                     <option value="PINCH">pinch</option>
                                     <option value="HANDFUL">handful</option>
                                     <option value="PIECE">piece</option>
+                                    <option value="CUP">cup</option>
                                 </select>
                             </td>
                             <td className='ingredientsSetupColumn'>
@@ -207,11 +225,7 @@ const Ingredients = ({extractedRecipeId}) => {
                             <div className='icon'>
                                 <IoMdAddCircle
                                     size={25}
-                                    onClick={() => {
-                                        setEditMode(0)
-                                        clearInputs()
-                                        setAddMode(true)
-                                    }}
+                                    onClick={() => enableAddMode()}
                                 />
                             </div>
                         </td>
@@ -244,10 +258,11 @@ const Ingredients = ({extractedRecipeId}) => {
                                 <option value="ML">ml</option>
                                 <option value="L">l</option>
                                 <option value="TEASPOON">teaspoon</option>
-                                <option value="SPOON">spoon</option>
+                                <option value="TABLESPOON">tablespoon</option>
                                 <option value="PINCH">pinch</option>
                                 <option value="HANDFUL">handful</option>
                                 <option value="PIECE">piece</option>
+                                <option value="CUP">cup</option>
                             </select>
                         </td>
                         <td className='ingredientsSetupColumn'>

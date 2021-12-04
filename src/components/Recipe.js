@@ -26,7 +26,10 @@ const Recipe = ({onDelete, onUpdate}) => {
     }, [recipeId]);
 
     const deleteRecipe = async (id) => {
-        //TODO: replace confirm with popup
+        if (recipe.isDefault) {
+            alert('You can\'t delete default recipes')
+            return;
+        }
         if (!window.confirm("Are you sure you wish to delete this item?")) {
             return
         }
@@ -34,7 +37,6 @@ const Recipe = ({onDelete, onUpdate}) => {
             method: 'DELETE',
         })
         if (res.status !== 200) {
-            //TODO: replace alert with popup
             alert('Error Deleting This Recipe')
             return
         }
@@ -44,14 +46,11 @@ const Recipe = ({onDelete, onUpdate}) => {
     }
 
     const updateRecipe = async () => {
-        //TODO: url validation
-        if (newName === '' || newImageUrl === '' || newPortions === '' || newTime === '' || newPreparation === '') {
-            //TODO: replace alert with popup
-            alert('Please fill all inputs')
+        if (newName === '') {
+            alert('Name input can\'t be empty')
             return
         }
         if (newName === recipe.name && newImageUrl === recipe.imageUrl && newPortions === recipe.portions && newTime === recipe.time && newPreparation === recipe.preparation) {
-            //TODO: replace alert with popup
             alert('Notching changed')
             return
         }
@@ -59,8 +58,8 @@ const Recipe = ({onDelete, onUpdate}) => {
             id: recipeId,
             name: newName,
             imageUrl: newImageUrl,
-            portions: newPortions,
-            time: newTime,
+            portions: newPortions === '' ? '0' : newPortions,
+            time: newTime === '' ? '?' : newTime,
             preparation: newPreparation
         }
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes`, {
@@ -116,6 +115,19 @@ const Recipe = ({onDelete, onUpdate}) => {
         return value
     }
 
+    function enableEditMode() {
+        if (recipe.isDefault) {
+            alert('You can\'t edit default recipes')
+            return;
+        }
+        setNewName(recipe.name)
+        setNewImageUrl(recipe.imageUrl)
+        setNewPortions(recipe.portions)
+        setNewTime(recipe.time)
+        setNewPreparation(recipe.preparation)
+        setEditMode(true)
+    }
+
     return (
         <div className='recipe'>
             <div className='recipePictureContainer'>
@@ -139,14 +151,7 @@ const Recipe = ({onDelete, onUpdate}) => {
                             <div className='icon' style={{color: 'white'}}>
                                 <MdEdit
                                     size={30}
-                                    onClick={() => {
-                                        setNewName(recipe.name)
-                                        setNewImageUrl(recipe.imageUrl)
-                                        setNewPortions(recipe.portions)
-                                        setNewTime(recipe.time)
-                                        setNewPreparation(recipe.preparation)
-                                        setEditMode(true)
-                                    }}
+                                    onClick={() => enableEditMode()}
                                 />
                             </div>
                         </div>
@@ -191,7 +196,13 @@ const Recipe = ({onDelete, onUpdate}) => {
                 </div>
 
                 {!editMode ? (
-                    <></>
+                    recipe.isDefault ? (
+                        <div id='defaultWatermark'>
+                            DEFAULT RECIPE
+                        </div>
+                    ) : (
+                        <></>
+                    )
                 ) : (
                     <input
                         id='recipeImgUrlInput'
@@ -247,7 +258,7 @@ const Recipe = ({onDelete, onUpdate}) => {
             </div>
 
             {!editMode ? (
-                <Ingredients extractedRecipeId={recipeId}/>
+                <Ingredients extractedRecipeId={recipeId} recipeIsDefault={recipe.isDefault}/>
             ) : (
                 <></>
             )}

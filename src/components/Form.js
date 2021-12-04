@@ -20,8 +20,9 @@ const Form = ({onSubmit}) => {
             name: newName,
             imageUrl: newImageUrl,
             portions: newPortions === '' ? '0' : newPortions,
-            time: newTime,
-            preparation: newPreparation
+            time: newTime === '' ? '?' : newTime,
+            preparation: newPreparation,
+            isDefault: false
         }
         await onSubmit(newRecipe)
         navigate('/', {replace: true});

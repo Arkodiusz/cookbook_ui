@@ -13,6 +13,16 @@ const Recipes = ({recipes}) => {
         return imageUrl
     }
 
+    function preparePortionsValue(value) {
+        if (value === 0) {
+            return '?'
+        }
+        if (value>10) {
+            return '> 10'
+        }
+        return value
+    }
+
     return (
         <div className='recipesContainer'>
 
@@ -26,10 +36,17 @@ const Recipes = ({recipes}) => {
                         <div className='recipesThumbnailBar'>
                             <h3>{recipe.name}</h3>
                             <div className='recipesThumbnailBarBottom'>
-                                <h6>PORTIONS :&nbsp;&nbsp;{recipe.portions === 0 ? '?' : recipe.portions}</h6>
+                                <h6>PORTIONS :&nbsp;&nbsp;{preparePortionsValue(recipe.portions)}</h6>
                                 <h6>PREP.&nbsp;&nbsp;TIME :&nbsp;&nbsp;{recipe.time === '' ? '?' : recipe.time}</h6>
                             </div>
                         </div>
+                        {recipe.isDefault ? (
+                            <div id='defaultWatermark' style={{top: -2}}>
+                                DEFAULT RECIPE
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </Link>
                 )
