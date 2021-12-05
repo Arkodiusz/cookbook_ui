@@ -61,7 +61,10 @@ footer {
     margin-top: 15px;
     text-align: center;
 }
-
+.loaderContainer h4 {
+    margin-top: 15px;
+    text-align: center;
+}
 /*********** RECIPES GRID ***********/
 
 .recipesContainer {
@@ -152,7 +155,8 @@ footer {
 
 /*********** RECIPE ***********/
 
-.recipe{
+.recipe h3{
+    padding-bottom: 8px;
 }
 
 .recipePictureContainer{
@@ -198,7 +202,6 @@ footer {
     text-align: center;
     max-width: 400px;
     font-size: 24px;
-
     width: 100%;
 }
 
@@ -251,22 +254,17 @@ footer {
     padding-top: 10px;
     padding-bottom: 10px;
     white-space:pre-wrap;
-}
-.prepDescription {
-    margin: auto auto 10px;
-    width: 80%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    word-wrap: break-word;
 }
 
 .prepDescription h3 {
     text-align: center;
+    padding-bottom: 3px;
 }
 
 .prepDescriptionInput {
     margin: auto auto 10px;
-    width: 80%;
-    text-align: center;
+    width: 80%
 }
 
 .prepDescriptionInput h3 {
@@ -284,17 +282,12 @@ footer {
     text-align: center;
 }
 
-.recipe table tr:nth-child(even){
-    background: whitesmoke;
-}
-
 #defaultWatermark {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     letter-spacing: 2px;
-    -webkit-text-stroke: 1px black;
-    color: white;
+    color: black;
     position: absolute;
     top: 14%;
     width: 100%;
@@ -306,6 +299,10 @@ footer {
 
 .ingredientsTableContainer {
     overflow-x: auto;
+    text-align: left;
+}
+
+.ingredientsTableContainer h3 {
     text-align: center;
 }
 
@@ -337,14 +334,19 @@ footer {
     display: flex;
 }
 
+.ingredientsTableContainer table tr:nth-child(even){
+    background: whitesmoke;
+}
+
 /*********** FORM ***********/
 
 .formContainer {
     padding: 5px;
-    margin: auto auto 10px;
-    width: 50%;
+    margin: auto auto;
+    width: 70%;
     min-width: 350px;
     text-align: center;
+    border: 3px solid whitesmoke;
 }
 
 .formContainer h3{
@@ -354,14 +356,13 @@ footer {
 
 .formInput {
     padding: 2px;
-
     display: flex;
     justify-content: space-between;
     height: 25px;
 }
 
 .formInput select {
-    width: 40%;
+    width: 10%;
 }
 
 #formDescription {
@@ -372,7 +373,9 @@ footer {
 #formOptions {
     display: flex;
     justify-content: space-between;
-    padding: 5px;
+    padding: 5px 30px 1px;
+    margin: 25px 20px 20px;
+    border: 3px solid whitesmoke;
 }
 
 #imagePreview {

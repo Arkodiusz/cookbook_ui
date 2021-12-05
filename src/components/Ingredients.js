@@ -22,14 +22,9 @@ const Ingredients = ({extractedRecipeId, recipeIsDefault}) => {
     }, [recipeId]);
 
     const saveNewIngredient = async () => {
-        if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
-            alert('Please fill all inputs')
+        const newIngredient = validateNewIngredient()
+        if (newIngredient.name === '') {
             return
-        }
-        const newIngredient = {
-            name: newName,
-            quantity: newQuantity,
-            unit: newUnit
         }
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${recipeId}/ingredients`, {
             method: 'POST',
@@ -46,14 +41,9 @@ const Ingredients = ({extractedRecipeId, recipeIsDefault}) => {
     }
 
     const updateIngredient = async (id) => {
-        if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
-            alert('Please fill all inputs')
+        const newIngredient = validateNewIngredient()
+        if (newIngredient.name === '') {
             return
-        }
-        const newIngredient = {
-            name: newName,
-            quantity: newQuantity,
-            unit: newUnit
         }
         const res = await fetch(`https://bcookbook.herokuapp.com/recipes/${recipeId}/ingredients/${id}`, {
             method: 'PUT',
@@ -89,6 +79,22 @@ const Ingredients = ({extractedRecipeId, recipeIsDefault}) => {
         console.log('deleted ingredient id =>', id)
     }
 
+    function validateNewIngredient() {
+        if (newName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
+            alert('Please fill all inputs')
+            return {name: ''}
+        }
+        if (parseFloat(newQuantity) > 1000) {
+            alert('Quantity max value is 1000')
+            return {name: ''}
+        }
+        return {
+            name: newName,
+            quantity: newQuantity,
+            unit: newUnit
+        }
+    }
+
     function clearInputs() {
         setNewName('')
         setNewQuantity('')
@@ -117,187 +123,198 @@ const Ingredients = ({extractedRecipeId, recipeIsDefault}) => {
         setAddMode(true)
     }
 
-    return (
-        <div>
-            {ingredients === null ? (
-                <div className='loaderContainer'>
-                    <div className='spinner'>
-                        <PacmanLoader size={25}/>
-                    </div>
-                    <h3>FETCHING DATA...</h3>
-                </div>
-            ) : (
-                <div className='ingredientsTableContainer'>
-                    <h3>INGREDIENTS:</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>NAME</th>
-                            <th>QUANTITY</th>
-                            <th>UNIT</th>
-                            <th>OPTIONS</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {ingredients.map((ingredient) =>
-                            editMode !== ingredient.id ? (
-                                // ********* ROW IN NORMAL MODE ********
-                                <tr key={ingredient.id}>
-                                    <td>
-                                        {ingredient.name}
-                                    </td>
-                                    <td>
-                                        {ingredient.quantity}
-                                    </td>
-                                    <td>
-                                        {ingredient.unit.toLowerCase()}
-                                    </td>
-                                    <td className='ingredientsSetupColumn'>
-                                        <div className='icon'>
-                                            <MdEdit
-                                                size={25}
-                                                onClick={() => enableEditMode(ingredient)}
-                                            />
-                                        </div>
-                                        <div className='icon'>
-                                            <MdDeleteForever
-                                                size={25}
-                                                onClick={() => deleteIngredient(ingredient.id)
-                                                }
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : (
-                                // ********* ROW IN EDIT MODE ********
-                                <tr key={ingredient.id}>
-                                    <td>
-                                        <input
-                                            type='text'
-                                            placeholder='name'
-                                            value={newName}
-                                            onChange={(e) => setNewName(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type='number'
-                                            placeholder='quantity'
-                                            value={newQuantity}
-                                            onChange={(e) => setNewQuantity(e.target.value)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <select name="newUnit"
-                                                value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
-                                            <option value="">unit</option>
-                                            <option value="G">g</option>
-                                            <option value="DAG">dag</option>
-                                            <option value="KG">kg</option>
-                                            <option value="ML">ml</option>
-                                            <option value="L">l</option>
-                                            <option value="TEASPOON">teaspoon</option>
-                                            <option value="TABLESPOON">tablespoon</option>
-                                            <option value="PINCH">pinch</option>
-                                            <option value="HANDFUL">handful</option>
-                                            <option value="PIECE">piece</option>
-                                            <option value="CUP">cup</option>
-                                        </select>
-                                    </td>
-                                    <td className='ingredientsSetupColumn'>
-                                        <div className='icon'>
-                                            <MdCheckCircle
-                                                size={25}
-                                                onClick={() => updateIngredient(ingredient.id)}
-                                            />
-                                        </div>
-                                        <div className='icon'>
-                                            <MdCancel
-                                                size={25}
-                                                onClick={() => {
-                                                    setEditMode(0)
-                                                    clearInputs()
-                                                }}
-                                            />
-                                        </div>
-                                    </td>
+    function validateKey(e) {
+        const restrictedKeys = ['e', '+', '-']
+        console.log(e.key)
 
-                                </tr>
-                            )
-                        )}
-                        {!addMode ? (
-                            // ********* ADD ROW DISABLED ********
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td className='ingredientsSetupColumn'>
-                                    <div className='icon'>
-                                        <IoMdAddCircle
-                                            size={25}
-                                            onClick={() => enableAddMode()}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                        ) : (
-                            // ********* ADD ROW ENABLED ********
-                            <tr>
-                                <td>
-                                    <input
-                                        type='text'
-                                        placeholder='name'
-                                        value={newName}
-                                        onChange={(e) => setNewName(e.target.value)}
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        type='number'
-                                        placeholder='quantity'
-                                        value={newQuantity}
-                                        onChange={(e) => setNewQuantity(e.target.value)}
-                                    />
-                                </td>
-                                <td>
-                                    <select value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
-                                        <option value="">unit</option>
-                                        <option value="G">g</option>
-                                        <option value="DAG">dag</option>
-                                        <option value="KG">kg</option>
-                                        <option value="ML">ml</option>
-                                        <option value="L">l</option>
-                                        <option value="TEASPOON">teaspoon</option>
-                                        <option value="TABLESPOON">tablespoon</option>
-                                        <option value="PINCH">pinch</option>
-                                        <option value="HANDFUL">handful</option>
-                                        <option value="PIECE">piece</option>
-                                        <option value="CUP">cup</option>
-                                    </select>
-                                </td>
-                                <td className='ingredientsSetupColumn'>
-                                    <div className='icon'>
-                                        <MdCheckCircle
-                                            size={25}
-                                            onClick={() => saveNewIngredient()}
-                                        />
-                                    </div>
-                                    <div className='icon'>
-                                        <MdCancel
-                                            size={25}
-                                            onClick={() => {
-                                                clearInputs()
-                                                setAddMode(false)
-                                            }}
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
+        if (restrictedKeys.includes(e.key)) {
+            e.preventDefault()
+        }
+    }
+
+    if (ingredients === null) {
+        return (
+            <div className='loaderContainer'>
+                <div className='spinner'>
+                    <PacmanLoader size={25}/>
                 </div>
-            )}
+            </div>
+        )
+    }
+    return (
+        <div className='ingredientsTableContainer'>
+            <h3>INGREDIENTS:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>QUANTITY</th>
+                    <th>UNIT</th>
+                    <th>OPTIONS</th>
+                </tr>
+                </thead>
+                <tbody>
+                {ingredients.map((ingredient) =>
+                    editMode !== ingredient.id ? (
+                        // ********* ROW IN NORMAL MODE ********
+                        <tr key={ingredient.id}>
+                            <td>
+                                {ingredient.name}
+                            </td>
+                            <td>
+                                {ingredient.quantity}
+                            </td>
+                            <td>
+                                {ingredient.unit.toLowerCase()}
+                            </td>
+                            <td className='ingredientsSetupColumn'>
+                                <div className='icon'>
+                                    <MdEdit
+                                        size={25}
+                                        onClick={() => enableEditMode(ingredient)}
+                                    />
+                                </div>
+                                <div className='icon'>
+                                    <MdDeleteForever
+                                        size={25}
+                                        onClick={() => deleteIngredient(ingredient.id)
+                                        }
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    ) : (
+                        // ********* ROW IN EDIT MODE ********
+                        <tr key={ingredient.id}>
+                            <td>
+                                <input
+                                    maxLength='32'
+                                    type='text'
+                                    placeholder='name'
+                                    value={newName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    type='number'
+                                    placeholder='quantity'
+                                    value={newQuantity}
+                                    onKeyDown={ (e) => validateKey(e)}
+                                    onChange={(e) => setNewQuantity(e.target.value.replace(',','.'))}
+                                />
+                            </td>
+                            <td>
+                                <select name="newUnit"
+                                        value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
+                                    <option value="">unit</option>
+                                    <option value="G">g</option>
+                                    <option value="DAG">dag</option>
+                                    <option value="KG">kg</option>
+                                    <option value="ML">ml</option>
+                                    <option value="L">l</option>
+                                    <option value="TEASPOON">teaspoon</option>
+                                    <option value="TABLESPOON">tablespoon</option>
+                                    <option value="PINCH">pinch</option>
+                                    <option value="HANDFUL">handful</option>
+                                    <option value="PIECE">piece</option>
+                                    <option value="CUP">cup</option>
+                                </select>
+                            </td>
+                            <td className='ingredientsSetupColumn'>
+                                <div className='icon'>
+                                    <MdCheckCircle
+                                        size={25}
+                                        onClick={() => updateIngredient(ingredient.id)}
+                                    />
+                                </div>
+                                <div className='icon'>
+                                    <MdCancel
+                                        size={25}
+                                        onClick={() => {
+                                            setEditMode(0)
+                                            clearInputs()
+                                        }}
+                                    />
+                                </div>
+                            </td>
+
+                        </tr>
+                    )
+                )}
+                {!addMode ? (
+                    // ********* ADD ROW DISABLED ********
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className='ingredientsSetupColumn'>
+                            <div className='icon'>
+                                <IoMdAddCircle
+                                    size={25}
+                                    onClick={() => enableAddMode()}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                ) : (
+                    // ********* ADD ROW ENABLED ********
+                    <tr>
+                        <td>
+                            <input
+                                maxLength='32'
+                                type='text'
+                                placeholder='name'
+                                value={newName}
+                                onChange={(e) => setNewName(e.target.value)}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type='number'
+                                placeholder='quantity'
+                                value={newQuantity}
+                                onKeyDown={ (e) => validateKey(e)}
+                                onChange={(e) => setNewQuantity(e.target.value.replace(',','.'))}
+                            />
+                        </td>
+                        <td>
+                            <select value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
+                                <option value="">unit</option>
+                                <option value="G">g</option>
+                                <option value="DAG">dag</option>
+                                <option value="KG">kg</option>
+                                <option value="ML">ml</option>
+                                <option value="L">l</option>
+                                <option value="TEASPOON">teaspoon</option>
+                                <option value="TABLESPOON">tablespoon</option>
+                                <option value="PINCH">pinch</option>
+                                <option value="HANDFUL">handful</option>
+                                <option value="PIECE">piece</option>
+                                <option value="CUP">cup</option>
+                            </select>
+                        </td>
+                        <td className='ingredientsSetupColumn'>
+                            <div className='icon'>
+                                <MdCheckCircle
+                                    size={25}
+                                    onClick={() => saveNewIngredient()}
+                                />
+                            </div>
+                            <div className='icon'>
+                                <MdCancel
+                                    size={25}
+                                    onClick={() => {
+                                        clearInputs()
+                                        setAddMode(false)
+                                    }}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
         </div>
     )
 }

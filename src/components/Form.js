@@ -2,29 +2,34 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {MdCheckCircle, MdCancel} from "react-icons/md";
 import image from "../assets/default-img.svg";
+import {MdDeleteForever} from "react-icons/all";
 
 const Form = ({onSubmit}) => {
-    const [newName, setNewName] = useState('')
+    const [newRecipeName, setNewRecipeName] = useState('')
     const [newImageUrl, setNewImageUrl] = useState('')
     const [newPortions, setNewPortions] = useState('')
     const [newTime, setNewTime] = useState('')
     const [newPreparation, setNewPreparation] = useState('')
+    const [newIngredientName, setNewIngredientName] = useState('')
+    const [newQuantity, setNewQuantity] = useState('')
+    const [newUnit, setNewUnit] = useState('')
+    const [ingredientList, setIngredientList] = useState([])
     const navigate = useNavigate();
 
     const submitForm = async () => {
-        if (newName === '') {
+        if (newRecipeName === '') {
             alert('Please fill at least name input')
             return
         }
         const newRecipe = {
-            name: newName,
+            name: newRecipeName,
             imageUrl: newImageUrl,
             portions: newPortions === '' ? '0' : newPortions,
             time: newTime === '' ? '?' : newTime,
             preparation: newPreparation,
             isDefault: false
         }
-        await onSubmit(newRecipe)
+        await onSubmit(newRecipe, ingredientList)
         navigate('/', {replace: true});
     }
 
@@ -38,24 +43,69 @@ const Form = ({onSubmit}) => {
         return imageUrl
     }
 
+    function clearIngredientInputs() {
+        setNewIngredientName('')
+        setNewQuantity('')
+        setNewUnit('')
+    }
+
+    function addIngredientToList() {
+        if (newIngredientName === '' || newQuantity === '' || newUnit === '' || newUnit === 'unit') {
+            alert('Please fill inputs of new ingredient')
+            return
+        }
+        if (parseFloat(newQuantity) > 1000) {
+            alert('Quantity max value is 1000')
+            return ''
+        }
+        const ingredient = {
+            name: newIngredientName,
+            quantity: newQuantity,
+            unit: newUnit
+        }
+
+        setIngredientList([...ingredientList, ingredient])
+
+        console.log(ingredientList)
+        clearIngredientInputs()
+    }
+
+    function removeIngredientFromList(ingredient) {
+        const newIngredientList = ingredientList.filter((i) => i !== ingredient)
+        setIngredientList(newIngredientList)
+    }
+
+    function validateKey(e) {
+        const restrictedKeys = ['e', '+', '-']
+        console.log(e.key)
+
+        if (restrictedKeys.includes(e.key)) {
+            e.preventDefault()
+        }
+    }
+
     return (
         <div className='formContainer'>
 
-            <h3>RECIPE ADD FORM</h3>
+            <h2>RECIPE ADD FORM</h2>
+            <br/>
+            <h3>INFO:</h3>
 
             <div className='formInput'>
                 <label>Name:</label>
                 <input
+                    maxLength='32'
                     type='text'
                     placeholder='name'
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
+                    value={newRecipeName}
+                    onChange={(e) => setNewRecipeName(e.target.value)}
                 />
             </div>
 
             <div className='formInput'>
                 <label>Image URL:</label>
                 <input
+                    maxLength='255'
                     type='text'
                     placeholder='imageUrl'
                     value={newImageUrl}
@@ -102,28 +152,110 @@ const Form = ({onSubmit}) => {
                     <option value="> 4 h">> 4 h</option>
                 </select>
             </div>
-
+            <br/>
             <div id='formDescription'>
-                <label>Preparation description:</label>
+                <h3>PREPARATION:</h3>
                 <textarea
+                    maxLength='4000'
                     className='prepDescriptionTextarea'
                     placeholder='preparation description'
                     value={newPreparation}
                     onChange={(e) => setNewPreparation(e.target.value)}
                 />
             </div>
+            <br/>
+            <div className='ingredientsTableContainer'>
+                <h3>INGREDIENTS:</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>QUANTITY</th>
+                        <th>UNIT</th>
+                        <th>OPTIONS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {ingredientList.map((ingredient) =>
+                        <tr key={ingredient.id}>
+                            <td>{ingredient.name}</td>
+                            <td>{ingredient.quantity}</td>
+                            <td>{ingredient.unit}</td>
+                            <td>
+                                <div className='icon'>
+                                    <MdDeleteForever
+                                        size={25}
+                                        onClick={() => removeIngredientFromList(ingredient)}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    )}
+                    <tr>
+                        <td>
+                            <input
+                                maxLength='32'
+                                type='text'
+                                placeholder='name'
+                                value={newIngredientName}
+                                onChange={(e) => setNewIngredientName(e.target.value)}
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type='number'
+                                placeholder='quantity'
+                                value={newQuantity}
+                                onKeyDown={ (e) => validateKey(e)}
+                                onChange={(e) => setNewQuantity(e.target.value.replace(',','.'))}
+                            />
+                        </td>
+                        <td>
+                            <select value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
+                                <option value="">unit</option>
+                                <option value="G">g</option>
+                                <option value="DAG">dag</option>
+                                <option value="KG">kg</option>
+                                <option value="ML">ml</option>
+                                <option value="L">l</option>
+                                <option value="TEASPOON">teaspoon</option>
+                                <option value="TABLESPOON">tablespoon</option>
+                                <option value="PINCH">pinch</option>
+                                <option value="HANDFUL">handful</option>
+                                <option value="PIECE">piece</option>
+                                <option value="CUP">cup</option>
+                            </select>
+                        </td>
+                        <td className='ingredientsSetupColumn'>
+                            <div className='icon'>
+                                <MdCheckCircle
+                                    size={25}
+                                    onClick={() => {addIngredientToList()}}
+                                />
+                            </div>
+                            <div className='icon'>
+                                <MdCancel
+                                    size={25}
+                                    onClick={() => clearIngredientInputs()}
+                                />
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div id='formOptions'>
                 <div className='icon'>
                     <MdCheckCircle
-                        size={35}
+                        size={40}
                         onClick={() => submitForm()}
                     />
                 </div>
                 <Link to='/'>
                     <div className='icon'>
                         <MdCancel
-                            size={35}
+                            size={40}
                         />
                     </div>
                 </Link>
