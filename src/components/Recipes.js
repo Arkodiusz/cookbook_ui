@@ -1,4 +1,4 @@
-import image from "../assets/default-img.png";
+import image from "../assets/default-img.svg";
 import {Link} from "react-router-dom";
 import {MdAddCircle} from "react-icons/md";
 import {PacmanLoader} from "react-spinners"

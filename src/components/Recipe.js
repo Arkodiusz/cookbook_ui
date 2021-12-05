@@ -1,4 +1,4 @@
-import image from '../assets/default-img.png'
+import image from "../assets/default-img.svg";
 import {useEffect, useState} from "react";
 import Ingredients from "./Ingredients";
 import {MdCancel, MdCheckCircle, MdDeleteForever, MdEdit} from "react-icons/all";

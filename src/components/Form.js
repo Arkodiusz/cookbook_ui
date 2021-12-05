@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {MdCheckCircle, MdCancel} from "react-icons/md";
-import image from "../assets/default-img.png";
+import image from "../assets/default-img.svg";
 
 const Form = ({onSubmit}) => {
     const [newName, setNewName] = useState('')
