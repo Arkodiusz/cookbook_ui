@@ -8,7 +8,7 @@ import Recipe from "./components/Recipe";
 import Form from "./components/Form";
 
 function App() {
-    const [recipes, setRecipes] = useState([])
+    const [recipes, setRecipes] = useState(null)
 
     useEffect(() => {
         const getRecipes = async () => {

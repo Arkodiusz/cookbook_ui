@@ -3,9 +3,10 @@ import {useEffect, useState} from "react";
 import Ingredients from "./Ingredients";
 import {MdCancel, MdCheckCircle, MdDeleteForever, MdEdit} from "react-icons/all";
 import {useLocation, useNavigate} from "react-router-dom";
+import {PacmanLoader} from "react-spinners";
 
 const Recipe = ({onDelete, onUpdate}) => {
-    const [recipe, setRecipe] = useState([])
+    const [recipe, setRecipe] = useState(null)
     const [editMode, setEditMode] = useState(false)
     const [newName, setNewName] = useState('')
     const [newImageUrl, setNewImageUrl] = useState('')
@@ -129,159 +130,159 @@ const Recipe = ({onDelete, onUpdate}) => {
     }
 
     return (
-        <div className='recipe'>
-            <div className='recipePictureContainer'>
-
-                {!editMode ? (
-                    <img
-                        src={validateImageUrl(recipe.imageUrl)}
-                        alt=''
-                    />
-                ): (
-                    <img
-                        src={validateImageUrl(newImageUrl)}
-                        alt=''
-                    />
-                )}
-
-                <div className='recipePictureContainerTopBar'>
-
-                    {!editMode ? (
-                        <div className={'recipePictureContainerTopBarEditBox'}>
-                            <div className='icon' style={{color: 'white'}}>
-                                <MdEdit
-                                    size={30}
-                                    onClick={() => enableEditMode()}
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={'recipePictureContainerTopBarEditBox'}>
-                            <div className='icon' style={{color: 'white'}}>
-                                <MdCheckCircle
-                                    size={30}
-                                    onClick={() => updateRecipe()}
-                                />
-                            </div>
-                            <div className='icon' style={{color: 'white'}}>
-                                <MdCancel
-                                    size={30}
-                                    onClick={() => {
-                                        setEditMode(false)
-                                        clearInputs()
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {!editMode ? (
-                        <h2>{recipe.name}</h2>
-                    ) : (
-                        <input
-                            type='text'
-                            placeholder='name'
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                        />
-                    )}
-                    <div className='recipePictureContainerTopBarDeleteBox'>
-                        <div className='icon' style={{color: 'white'}}>
-                            <MdDeleteForever
-                                size={30}
-                                onClick={() => deleteRecipe(recipe.id)}
-                            />
-                        </div>
+        <div>
+            {recipe === null ? (
+                <div className='loaderContainer'>
+                    <div className='spinner'>
+                        <PacmanLoader size={25}/>
                     </div>
+                    <h3>FETCHING DATA...</h3>
                 </div>
+            ) : (
+                <div>
+                    {!editMode ? (
+                    //**** NORMAL MODE ****
+                        <div className='recipe'>
+                            <div className='recipePictureContainer'>
+                                <img
+                                    src={validateImageUrl(recipe.imageUrl)}
+                                    alt=''
+                                />
+                                <div className='recipePictureContainerTopBar'>
+                                    <div className={'recipePictureContainerTopBarEditBox'}>
+                                        <div className='icon' style={{color: 'white'}}>
+                                            <MdEdit
+                                                size={30}
+                                                onClick={() => enableEditMode()}
+                                            />
+                                        </div>
+                                    </div>
+                                    <h2>{recipe.name}</h2>
 
-                {!editMode ? (
-                    recipe.isDefault ? (
-                        <div id='defaultWatermark'>
-                            DEFAULT RECIPE
+                                    <div className='recipePictureContainerTopBarDeleteBox'>
+                                        <div className='icon' style={{color: 'white'}}>
+                                            <MdDeleteForever
+                                                size={30}
+                                                onClick={() => deleteRecipe(recipe.id)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                {recipe.isDefault ? (
+                                    <div id='defaultWatermark'>
+                                        DEFAULT RECIPE
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
+                                <span>
+                                    <h5>PORTIONS :&ensp;{preparePortionsValue(recipe.portions)}</h5>
+                                    <h5>PREP.&ensp;TIME :&ensp;{prepareTimeValue(recipe.time)}</h5>
+                                </span>
+                            </div>
+                            <Ingredients extractedRecipeId={recipeId} recipeIsDefault={recipe.isDefault}/>
+                            <div className='prepDescription'>
+                                <h3>PREPARATION:</h3>
+                                &emsp;{recipe.preparation}
+                            </div>
                         </div>
                     ) : (
-                        <></>
-                    )
-                ) : (
-                    <input
-                        id='recipeImgUrlInput'
-                        type='text'
-                        placeholder='imageUrl'
-                        value={newImageUrl}
-                        onChange={(e) => setNewImageUrl(e.target.value)}
-                    />
-                )}
-
-                {!editMode ? (
-                    <span>
-                        <h5>PORTIONS :&ensp;{preparePortionsValue(recipe.portions)}</h5>
-                        <h5>PREP.&ensp;TIME :&ensp;{prepareTimeValue(recipe.time)}</h5>
-                    </span>
-                ) : (
-                    <span>
-                        <div className='recipePictureContainerEditBox'>
-                            <h5>PORTIONS :&ensp;</h5>
-                            <select value={newPortions} onChange={(e) => setNewPortions(e.target.value)}>
-                                <option value="0">?</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                                <option value="11">> 10</option>
-                            </select>
+                    //**** EDIT MODE ****
+                        <div className='recipe'>
+                            <div className='recipePictureContainer'>
+                                <img
+                                    src={validateImageUrl(newImageUrl)}
+                                    alt=''
+                                />
+                                <div className='recipePictureContainerTopBar'>
+                                    <div className={'recipePictureContainerTopBarEditBox'}>
+                                        <div className='icon' style={{color: 'white'}}>
+                                            <MdCheckCircle
+                                                size={30}
+                                                onClick={() => updateRecipe()}
+                                            />
+                                        </div>
+                                        <div className='icon' style={{color: 'white'}}>
+                                            <MdCancel
+                                                size={30}
+                                                onClick={() => {
+                                                    setEditMode(false)
+                                                    clearInputs()
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <input
+                                        type='text'
+                                        placeholder='name'
+                                        value={newName}
+                                        onChange={(e) => setNewName(e.target.value)}
+                                    />
+                                    <div className='recipePictureContainerTopBarDeleteBox'>
+                                        <div className='icon' style={{color: 'white'}}>
+                                            <MdDeleteForever
+                                                size={30}
+                                                onClick={() => deleteRecipe(recipe.id)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <input
+                                    id='recipeImgUrlInput'
+                                    type='text'
+                                    placeholder='imageUrl'
+                                    value={newImageUrl}
+                                    onChange={(e) => setNewImageUrl(e.target.value)}
+                                />
+                                <span>
+                                    <div className='recipePictureContainerEditBox'>
+                                        <h5>PORTIONS :&ensp;</h5>
+                                        <select value={newPortions} onChange={(e) => setNewPortions(e.target.value)}>
+                                            <option value="0">?</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">> 10</option>
+                                        </select>
+                                    </div>
+                                    <div className='recipePictureContainerEditBox'>
+                                        <h5>PREP.&ensp;TIME :&ensp;</h5>
+                                        <select value={newTime} onChange={(e) => setNewTime(e.target.value)}>
+                                            <option value="?">?</option>
+                                            <option value="5 min">5 min</option>
+                                            <option value="10 min">10 min</option>
+                                            <option value="15 min">15 min</option>
+                                            <option value="30 min">30 min</option>
+                                            <option value="45 min">45 min</option>
+                                            <option value="1 h">1 h</option>
+                                            <option value="1,5 h">1,5 h</option>
+                                            <option value="2 h">2 h</option>
+                                            <option value="3 h">3 h</option>
+                                            <option value="> 4 h">> 4 h</option>
+                                        </select>
+                                    </div>
+                                </span>
+                            </div>
+                            <div className='prepDescriptionInput'>
+                                <h3>PREPARATION:</h3>
+                                <textarea
+                                    className='prepDescriptionTextarea'
+                                    placeholder='preparation description'
+                                    value={newPreparation}
+                                    onChange={(e) => setNewPreparation(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <div className='recipePictureContainerEditBox'>
-                            <h5>PREP.&ensp;TIME :&ensp;</h5>
-                            <select value={newTime} onChange={(e) => setNewTime(e.target.value)}>
-                                <option value="?">?</option>
-                                <option value="5 min">5 min</option>
-                                <option value="10 min">10 min</option>
-                                <option value="15 min">15 min</option>
-                                <option value="30 min">30 min</option>
-                                <option value="45 min">45 min</option>
-                                <option value="1 h">1 h</option>
-                                <option value="1,5 h">1,5 h</option>
-                                <option value="2 h">2 h</option>
-                                <option value="3 h">3 h</option>
-                                <option value="> 4 h">> 4 h</option>
-                            </select>
-                        </div>
-                    </span>
-                )}
-            </div>
-
-            {!editMode ? (
-                <Ingredients extractedRecipeId={recipeId} recipeIsDefault={recipe.isDefault}/>
-            ) : (
-                <></>
-            )}
-
-            {!editMode ? (
-                <div className='prepDescription'>
-                    <h3>PREPARATION:</h3>
-                    &emsp;{recipe.preparation}
-                </div>
-            ) : (
-                <div className='prepDescriptionInput'>
-                    <h3>PREPARATION:</h3>
-                    <textarea
-                        className='prepDescriptionTextarea'
-                        placeholder='preparation description'
-                        value={newPreparation}
-                        onChange={(e) => setNewPreparation(e.target.value)}
-                    />
+                    )}
                 </div>
             )}
-            <div>
-
-            </div>
         </div>
     )
 }
