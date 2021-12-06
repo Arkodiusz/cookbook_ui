@@ -264,6 +264,7 @@ footer {
 
 .prepDescriptionInput {
     margin: auto auto 10px;
+    padding-top: 10px;
     width: 80%
 }
 
@@ -293,6 +294,19 @@ footer {
     width: 100%;
     padding: 5px;
     text-align: center;
+}
+
+#prepDescriptionHeader {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#descOptions {
+    display: flex;
+    justify-content: space-between;
+    width: 80px;
 }
 
 /*********** INGREDIENTS ***********/

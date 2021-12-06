@@ -8,7 +8,7 @@ const RecipeDescription = ({description, editMode, onEnableEditMode, onDisableEd
     if(!editMode) {
         return (
         <div className='prepDescription'>
-            <div>
+            <div id='prepDescriptionHeader'>
                 <div className='icon'>
                     <MdEdit
                         size={30}
@@ -26,28 +26,34 @@ const RecipeDescription = ({description, editMode, onEnableEditMode, onDisableEd
         )
     }
 
+    const saveDescription = async () => {
+        await onUpdate(newPreparation)
+        setNewPreparation('')
+    }
+
     return (
         <div className='prepDescriptionInput'>
-            <div>
-                <div className='icon'>
-                    <MdCheckCircle
-                        size={30}
-                        onClick={() => {
-                            onUpdate(newPreparation)
-                            setNewPreparation('')
-                        }}
-                    />
+            <div id='prepDescriptionHeader'>
+                <div id='descOptions'>
+                    <div className='icon'>
+                        <MdCheckCircle
+                            size={30}
+                            onClick={() => saveDescription()}
+                        />
+                    </div>
+                    <div className='icon'>
+                        <MdCancel
+                            size={30}
+                            onClick={() => {
+                                onDisableEditMode()
+                                setNewPreparation('')
+                            }}
+                        />
+                    </div>
                 </div>
                 <h3>PREPARATION:</h3>
-                <div className='icon'>
-                    <MdCancel
-                        size={30}
-                        onClick={() => {
-                            onDisableEditMode()
-                            setNewPreparation('')
-                        }}
-                    />
-                </div>
+                <div style={{width: 80}}></div>
+
             </div>
             <textarea
                 maxLength='4000'

@@ -95,6 +95,25 @@ const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUp
         )
     }
 
+    const saveRecipeInfo = async () => {
+        if (newName === '') {
+            alert('Name input can\'t be empty')
+            return
+        }
+        if (newName === recipe.name && newImageUrl === recipe.imageUrl && newPortions === recipe.portions && newTime === recipe.time) {
+            alert('Notching changed')
+            return
+        }
+        const data = {
+            name: newName,
+            imageUrl: newImageUrl,
+            portions: newPortions === '' ? '0' : newPortions,
+            time: newTime === '' ? '?' : newTime
+        }
+        await onUpdate(data)
+        clearInfoInputs()
+    }
+
     return (
         <div className='recipePictureContainer'>
             <img
@@ -106,24 +125,7 @@ const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUp
                     <div className='icon' style={{color: 'white'}}>
                         <MdCheckCircle
                             size={30}
-                            onClick={() => {
-                                if (newName === '') {
-                                    alert('Name input can\'t be empty')
-                                    return
-                                }
-                                if (newName === recipe.name && newImageUrl === recipe.imageUrl && newPortions === recipe.portions && newTime === recipe.time) {
-                                    alert('Notching changed')
-                                    return
-                                }
-                                const data = {
-                                    name: newName,
-                                    imageUrl: newImageUrl,
-                                    portions: newPortions === '' ? '0' : newPortions,
-                                    time: newTime === '' ? '?' : newTime
-                                }
-                                onUpdate(data)
-                                clearInfoInputs()
-                            }}
+                            onClick={() => saveRecipeInfo()}
                         />
                     </div>
                     <div className='icon' style={{color: 'white'}}>
