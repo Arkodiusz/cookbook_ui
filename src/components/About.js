@@ -5,11 +5,16 @@ const About = () => {
         <div id='about'>
             <h3>Welcome to my CookBook App</h3>
             <div>
-                text<br/>
-                text<br/>
-                more text<br/>
+                <br/>This UI is made with React and it consumes REST API of my Spring project deployed on Heroku.
                 <br/>
-                <a href="https://www.freepik.com/vectors/food">Logo & default image vector created by freepik - www.freepik.com</a>
+                <br/>Fell free to add some recipes and test my app :)
+                <br/>I will be grateful for comments and reported issues on my GitHub!
+                <br/>
+                <br/><a href="https://github.com/Arkodiusz/cookbook_ui">Frontend repository</a>
+                <br/>
+                <br/><a href="https://github.com/Arkodiusz/cookbook">Backend repository</a>
+                <br/>
+                <br/>logo & default image vector created by freepik - <a href="https://www.freepik.com">www.freepik.com</a>
             </div>
         </div>
 
