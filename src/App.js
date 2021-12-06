@@ -44,7 +44,7 @@ function App() {
     }
 
     const filterRecipes = async (id) => {
-        setRecipes(recipes.filter((recipe) => recipe.id !== id))
+        setRecipes(recipes.filter((recipe) => recipe.id.toString() !== id))
     }
 
     const replaceRecipe = async (newRecipe) => {
@@ -60,9 +60,22 @@ function App() {
             <div className="app">
                 <Header />
                 <Routes>
-                    <Route path='/' element={<Recipes recipes={recipes} />}/>
-                    <Route path='/recipe/:id' element={<Recipe onDelete={(id) => filterRecipes(id)} onUpdate={(recipe) => replaceRecipe(recipe)}/>}/>
-                    <Route path='/form' element={<Form onSubmit={(recipe, ingredientList) => saveNewRecipe(recipe, ingredientList)}/>}/>
+                    <Route path='/' element={
+                        <Recipes
+                            recipes={recipes}
+                        />}
+                    />
+                    <Route path='/recipe/:id' element={
+                        <Recipe
+                            onDelete={(id) => filterRecipes(id)}
+                            onUpdate={(recipe) => replaceRecipe(recipe)}
+                        />}
+                    />
+                    <Route path='/form' element={
+                        <Form
+                            onSubmit={(recipe, ingredientList) => saveNewRecipe(recipe, ingredientList)}
+                        />}
+                    />
                     <Route path='/about' element={<About/>}/>
                 </Routes>
                 <Footer />
