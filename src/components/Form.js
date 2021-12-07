@@ -2,7 +2,11 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {MdCheckCircle, MdCancel} from "react-icons/md";
 import image from "../assets/default-img.svg";
-import {MdDeleteForever} from "react-icons/all";
+import InputName from "./ingredient/InputName";
+import InputQuantity from "./ingredient/InputQuantity";
+import OptionsEdit from "./ingredient/OptionsEdit";
+import SelectUnit from "./ingredient/SelectUnit";
+import OptionsBasic from "./ingredient/OptionsBasic";
 
 const Form = ({onSubmit}) => {
     const [newRecipeName, setNewRecipeName] = useState('')
@@ -73,15 +77,6 @@ const Form = ({onSubmit}) => {
     function removeIngredientFromList(ingredient) {
         const newIngredientList = ingredientList.filter((i) => i !== ingredient)
         setIngredientList(newIngredientList)
-    }
-
-    function validateKey(e) {
-        const restrictedKeys = ['e', '+', '-']
-        console.log(e.key)
-
-        if (restrictedKeys.includes(e.key)) {
-            e.preventDefault()
-        }
     }
 
     return (
@@ -182,63 +177,37 @@ const Form = ({onSubmit}) => {
                             <td>{ingredient.quantity}</td>
                             <td>{ingredient.unit}</td>
                             <td>
-                                <div className='icon'>
-                                    <MdDeleteForever
-                                        size={25}
-                                        onClick={() => removeIngredientFromList(ingredient)}
-                                    />
-                                </div>
+                                <OptionsBasic
+                                    onEdit={false}
+                                    onDelete={() => removeIngredientFromList(ingredient)}
+                                />
                             </td>
                         </tr>
                     )}
                     <tr>
                         <td>
-                            <input
-                                maxLength='32'
-                                type='text'
-                                placeholder='name'
+                            <InputName
                                 value={newIngredientName}
-                                onChange={(e) => setNewIngredientName(e.target.value)}
+                                onChange={setNewIngredientName}
                             />
                         </td>
                         <td>
-                            <input
-                                type='number'
-                                placeholder='quantity'
+                            <InputQuantity
                                 value={newQuantity}
-                                onKeyDown={ (e) => validateKey(e)}
-                                onChange={(e) => setNewQuantity(e.target.value.replace(',','.'))}
+                                onChange={setNewQuantity}
                             />
                         </td>
                         <td>
-                            <select value={newUnit} onChange={(e) => setNewUnit(e.target.value)}>
-                                <option value="">unit</option>
-                                <option value="G">g</option>
-                                <option value="DAG">dag</option>
-                                <option value="KG">kg</option>
-                                <option value="ML">ml</option>
-                                <option value="L">l</option>
-                                <option value="TEASPOON">teaspoon</option>
-                                <option value="TABLESPOON">tablespoon</option>
-                                <option value="PINCH">pinch</option>
-                                <option value="HANDFUL">handful</option>
-                                <option value="PIECE">piece</option>
-                                <option value="CUP">cup</option>
-                            </select>
+                            <SelectUnit
+                                value={newUnit}
+                                onChange={setNewUnit}
+                            />
                         </td>
-                        <td className='ingredientsSetupColumn'>
-                            <div className='icon'>
-                                <MdCheckCircle
-                                    size={25}
-                                    onClick={() => {addIngredientToList()}}
-                                />
-                            </div>
-                            <div className='icon'>
-                                <MdCancel
-                                    size={25}
-                                    onClick={() => clearIngredientInputs()}
-                                />
-                            </div>
+                        <td>
+                            <OptionsEdit
+                                onAccept={() => addIngredientToList()}
+                                onCancel={() => clearIngredientInputs()}
+                            />
                         </td>
                     </tr>
                     </tbody>

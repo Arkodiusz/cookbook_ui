@@ -344,12 +344,21 @@ footer {
 }
 
 .ingredientsSetupColumn {
-    justify-content: space-evenly;
     display: flex;
+    justify-content: space-between;
+    max-width: 80px
 }
 
 .ingredientsTableContainer table tr:nth-child(even){
     background: whitesmoke;
+}
+
+.ingredientsTableContainer select:required:invalid {
+    color: gray;
+}
+
+.ingredientsTableContainer option {
+    color: black;
 }
 
 /*********** FORM ***********/
@@ -404,5 +413,10 @@ footer {
 /*********** ABOUT ***********/
 
 #about {
-    background: whitesmoke;
+    margin: auto auto;
+    max-width: 700px;
+}
+
+#about h3 {
+    text-align: center;
 }

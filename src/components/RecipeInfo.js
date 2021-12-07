@@ -9,6 +9,25 @@ const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUp
     const [newPortions, setNewPortions] = useState('')
     const [newTime, setNewTime] = useState('')
 
+    const saveRecipeInfo = async () => {
+        if (newName === '') {
+            alert('Name input can\'t be empty')
+            return
+        }
+        if (newName === recipe.name && newImageUrl === recipe.imageUrl && newPortions === recipe.portions && newTime === recipe.time) {
+            alert('Notching changed')
+            return
+        }
+        const data = {
+            name: newName,
+            imageUrl: newImageUrl,
+            portions: newPortions === '' ? '0' : newPortions,
+            time: newTime === '' ? '?' : newTime
+        }
+        await onUpdate(data)
+        clearInfoInputs()
+    }
+
     function validateImageUrl(imageUrl) {
         if (imageUrl === undefined) {
             return image.toString()
@@ -93,25 +112,6 @@ const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUp
                 </span>
             </div>
         )
-    }
-
-    const saveRecipeInfo = async () => {
-        if (newName === '') {
-            alert('Name input can\'t be empty')
-            return
-        }
-        if (newName === recipe.name && newImageUrl === recipe.imageUrl && newPortions === recipe.portions && newTime === recipe.time) {
-            alert('Notching changed')
-            return
-        }
-        const data = {
-            name: newName,
-            imageUrl: newImageUrl,
-            portions: newPortions === '' ? '0' : newPortions,
-            time: newTime === '' ? '?' : newTime
-        }
-        await onUpdate(data)
-        clearInfoInputs()
     }
 
     return (
