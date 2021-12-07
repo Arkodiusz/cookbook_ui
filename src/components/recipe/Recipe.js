@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import Ingredients from "./ingredient/Ingredients";
+import Ingredients from "../ingredient/Ingredients";
 import RecipeDescription from "./RecipeDescription";
 import RecipeInfo from "./RecipeInfo";
 import {useLocation, useNavigate} from "react-router-dom";

@@ -1,6 +1,8 @@
 import {MdCancel, MdCheckCircle, MdDeleteForever, MdEdit} from "react-icons/all";
-import image from "../assets/default-img.svg";
+import image from "../../assets/default-img.svg";
 import {useState} from "react";
+import SelectTime from "./SelectTime";
+import SelectPortions from "./SelectPortions";
 
 const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUpdate, onDelete}) => {
 
@@ -165,36 +167,17 @@ const RecipeInfo = ({recipe, editMode, onEnableEditMode, onDisableEditMode, onUp
             <span>
                 <div className='recipePictureContainerEditBox'>
                     <h5>PORTIONS :&ensp;</h5>
-                    <select value={newPortions} onChange={(e) => setNewPortions(e.target.value)}>
-                        <option value="0">?</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">> 10</option>
-                    </select>
+                    <SelectPortions
+                        value={newPortions}
+                        onChange={setNewPortions}
+                    />
                 </div>
                 <div className='recipePictureContainerEditBox'>
                     <h5>PREP.&ensp;TIME :&ensp;</h5>
-                    <select value={newTime} onChange={(e) => setNewTime(e.target.value)}>
-                        <option value="?">?</option>
-                        <option value="5 min">5 min</option>
-                        <option value="10 min">10 min</option>
-                        <option value="15 min">15 min</option>
-                        <option value="30 min">30 min</option>
-                        <option value="45 min">45 min</option>
-                        <option value="1 h">1 h</option>
-                        <option value="1,5 h">1,5 h</option>
-                        <option value="2 h">2 h</option>
-                        <option value="3 h">3 h</option>
-                        <option value="> 4 h">> 4 h</option>
-                    </select>
+                    <SelectTime
+                        value={newTime}
+                        onChange={setNewTime}
+                    />
                 </div>
             </span>
         </div>

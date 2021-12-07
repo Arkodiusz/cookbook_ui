@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import Recipes from "./components/Recipes";
 import {HashRouter as Router, Route, Routes} from 'react-router-dom'
 import About from "./components/About";
-import Recipe from "./components/Recipe";
+import Recipe from "./components/recipe/Recipe";
 import Form from "./components/Form";
 
 function App() {
